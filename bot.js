@@ -37,7 +37,29 @@ client.on('ready', () => {
   client.user.setActivity(config.activity.name, { url: config.activity.url, type: config.activity.type });
 });
 
-client.on('guildCreate', (guild) => log(`Joined new server: ${guild.name} with ${guild.memberCount} members.`));
+client.on('guildCreate', (guild) => {
+  log(`Joined new server: ${guild.name} with ${guild.memberCount} members.`);
+
+  guild.channels.create("Current Assignments", {
+    type: 'category',
+    reason: 'All currently active assignments will be placed in one category.'
+  }).then(activeCategory => {
+
+    guild.channels.create("Archived Assignments", {
+      type: 'category',
+      reason: 'All completed/inactive assignments will be placed in another category.'
+    }).then(archiveCategory => {
+
+      fs.writeFileSync(`./data/${guild.id}.json`, JSON.stringify({
+        activeCategory: activeCategory.id,
+        archiveCategory: archiveCategory.id
+      }, null, 4));
+
+      guild.owner.send("Thank you for inviting me to your server. I have gone ahead and created two categories for active and old/archived/inactive assignments. You may move or rename them as you wish, but please do not remove them. This will require you to kick and reinvite me. This will cause me to forget your assignments because I have amnesia.");
+    });
+  });
+});
+
 client.on('guildDelete', (guild) => log(`Left server: ${guild.name} with ${guild.memberCount} members.`));
 
 client.on('message', async (message) => {

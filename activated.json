@@ -1,5 +1,7 @@
 {
     "example": false,
     "credits": true,
-    "hash": true
+    "hash": true,
+
+    "assignment": true
 }
