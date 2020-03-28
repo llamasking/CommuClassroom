@@ -32,20 +32,21 @@ client.on('ready', () => {
     Logged in as ${client.user.username}.
     Bot.js hash: ${botjshash}
     Total hash: ${totalhash}
-    Time: ${new Date()}
-    Serving ${client.guilds.size} servers with ${client.users.size} users.\n`);
+    Time: ${new Date()}\n`);
+    
   client.user.setActivity(config.activity.name, { url: config.activity.url, type: config.activity.type });
+  client.user.setStatus(config.status);
 });
 
 client.on('guildCreate', (guild) => {
   log(`Joined new server: ${guild.name} with ${guild.memberCount} members.`);
 
-  guild.channels.create("Current Assignments", {
+  guild.channels.create('Current Assignments', {
     type: 'category',
     reason: 'All currently active assignments will be placed in one category.'
   }).then(activeCategory => {
 
-    guild.channels.create("Archived Assignments", {
+    guild.channels.create('Archived Assignments', {
       type: 'category',
       reason: 'All completed/inactive assignments will be placed in another category.'
     }).then(archiveCategory => {
@@ -55,7 +56,7 @@ client.on('guildCreate', (guild) => {
         archiveCategory: archiveCategory.id
       }, null, 4));
 
-      guild.owner.send("Thank you for inviting me to your server. I have gone ahead and created two categories for active and old/archived/inactive assignments. You may move or rename them as you wish, but please do not remove them. This will require you to kick and reinvite me. This will cause me to forget your assignments because I have amnesia.");
+      guild.owner.send('Thank you for inviting me to your server. I have gone ahead and created two categories for active and old/archived/inactive assignments. You may move or rename them as you wish, but please do not remove them. This will require you to kick and reinvite me. This will cause me to forget your assignments because I have amnesia.');
     });
   });
 });
@@ -68,8 +69,15 @@ client.on('message', async (message) => {
   if (message.guild === null) return;
 
   // @Bot *help* and @Bot *commands*
-  if (message.isMentioned(client.user.id) && message.content.includes('help' || 'commands')) {
+  if (message.mentions.users.has(client.user.id) && message.content.includes('help' || 'commands')) {
     require('./modules/help.js')(message, args);
+    return;
+  }
+
+  // Bot can be requested by just mentioning it since it only has one core command.
+  if (message.mentions.users.has(client.user.id)) {
+    const args = message.content.trim().split(/ +/g).slice(1);
+    require('./modules/assignment.js')(message, args);
     return;
   }
 

@@ -18,6 +18,7 @@ module.exports = {
         "quotes": [1, "single", { "avoidEscape": true }],
         "no-console": "off",
         "semi": "warn",
-        "eqeqeq": "warn"
+        "eqeqeq": "warn",
+        "no-redeclare": "off"
     }
 };
