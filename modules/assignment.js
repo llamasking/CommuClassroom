@@ -20,7 +20,7 @@ module.exports = (message, args) => {
             break;
         }
 
-        case 'handler': 
+        case 'handler': {
             // Declare some variables
             var replytext = 'I am making you the handler of: ';
             var channelsToModify = [];
@@ -30,7 +30,7 @@ module.exports = (message, args) => {
                 // Check that all channels mentioned are current assignments.
                 message.mentions.channels.each(channel => {
                     if (channel.parent.id !== guildInfo.activeCategory) {
-                        message.channel.send(`${channel} is not under the 'Current Assignments' category so I will not modify it.`);
+                        channel.send(`${channel} is not under the 'Current Assignments' category so I will not modify it.`);
                     } else {
                         // Since this channel is an active assignment, add it to the list of channels to modify.
                         channelsToModify.push(channel);
@@ -38,6 +38,13 @@ module.exports = (message, args) => {
                     }
                 });
             } else {
+                // Verify this channel is an active assignment
+                if (message.channel.parent.id !== guildInfo.activeCategory) {
+                    message.channel.send('No assignment channel mentioned. Assuming you mean this channel. However, this channel is not under the \'Current Assignments\' category so I will not modify it.');
+                    return;
+                }
+
+                // Since this channel is an active assignment, add it to the list of channels to modify.
                 message.channel.send('No assignment channel mentioned. Assuming you mean this channel.');
                 channelsToModify.push(message.channel);
                 replytext += `<#${message.channel.id}>`;
@@ -49,8 +56,14 @@ module.exports = (message, args) => {
             // Modify the channel(s)
             channelsToModify.forEach(channel => channel.setTopic(channel.topic.replace(/\*\*handler:\*\*.*/mi, `**Handler:** ${message.author.tag}`)));
             break;
+        }
 
-        default: 
+        case 'turnedin': {
+            var handler = 
+        }
+
+        default: {
             message.channel.send('Command unrecognized or not given. Please use !!assignment help or just mention me and mention help.');
+        }
     }
 };
