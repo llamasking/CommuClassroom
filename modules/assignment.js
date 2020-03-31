@@ -3,18 +3,15 @@
 // Description: Assignment handler. I'll probably put most or all assignment data in this command.
 */
 
-// This module is a bit magical and has some requirements.
-const fs = require('fs');
-const Discord = require('discord.js');
-
 module.exports = (message, args) => {
-    var guildinfo = require(`../data/${message.guild.id}.json`);
+    var guildInfo = require(`../data/${message.guild.id}.json`);
 
     switch(args[0]) {
         case 'new': {
             // Create new channel for assignment
             message.guild.channels.create(args[1], {
-                parent: guildinfo.activeCategory,
+                parent: guildInfo.activeCategory,
+                topic: '**Maintainer:** Please use "!!assignment maintainer" to you the maintainer. \n\n**Details:** ',
                 reason: 'New assignment created by: ' + message.author.username
             });
 
@@ -24,41 +21,38 @@ module.exports = (message, args) => {
         }
 
         case 'handler': 
-            var replytext = '';
+            // Declare some variables
+            var replytext = 'I am making you the maintainer of: ';
+            var channelsToModify = [];
+
             // Check if the message mentions any assignment channels to be modified. If not, assume the channel message is from to be modified.
-            if (!message.mentions.channels) {
-                var channelsToModify = {};
+            if (message.mentions.channels.size > 0) {
                 // Check that all channels mentioned are current assignments.
-                for (var channel in message.mentions.channels)  {
-                    if (channel.parent.id !== guildinfo.activeCategory) {
-                        message.reply(`${channel} is not under the 'Current Assignments' category so I will not modify it. -- `);
-                        return;
+                message.mentions.channels.each(channel => {
+                    if (channel.parent.id !== guildInfo.activeCategory) {
+                        message.channel.send(`${channel} is not under the 'Current Assignments' category so I will not modify it.`);
                     } else {
                         // Since this channel is an active assignment, add it to the list of channels to modify.
                         channelsToModify.push(channel);
+                        replytext += `${channel}`;
                     }
-                }
+                });
             } else {
-                replytext += 'No assignment channel mentioned. Assuming you mean this channel. -- ';
-                var channelsToModify = message.channel;
+                message.channel.send('No assignment channel mentioned. Assuming you mean this channel.');
+                channelsToModify.push(message.channel);
+                replytext += `<#${message.channel.id}>`;
             }
 
-            // Check if the message mentions any user to be made handler. If not, assume message author to be the handler.
-            if (!message.mentions.members) {
-                replytext += 'No maintainer mentioned. Assuming you to be the maintainer.';
-                var handler = message.member;
-            } else {
-                var handler = message.mentions.members.first();
-                replytext += `Making ${message.mentions.members.first()} maintainer.`;
-            }
+            // Tell user the work will be done.
+            message.channel.send(replytext);
 
-            message.reply(replytext);
-
-            console.log(message.mentions.members.delete(message.guild.me));
-            
+            // Modify the channel(s)
+            channelsToModify.forEach(channel => {
+                channel.setTopic(channel.topic.replace(/\*\*maintainer:\*\*.*/mi, `**Maintainer:** ${message.author.tag}`));
+            });
             break;
 
         default: 
-            message.reply('Command unrecognized or not given. Please use !!assignment help or just mention me and mention help.');
+            message.channel.send('Command unrecognized or not given. Please use !!assignment help or just mention me and mention help.');
     }
 };
