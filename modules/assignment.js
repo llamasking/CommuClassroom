@@ -11,7 +11,7 @@ module.exports = (message, args) => {
             // Create new channel for assignment
             message.guild.channels.create(args[1], {
                 parent: guildInfo.activeCategory,
-                topic: '**Maintainer:** Please use "!!assignment maintainer" to you the maintainer. \n\n**Details:** ',
+                topic: '**Handler:** Please use "!!assignment handler" to you the handler. \n\n**Details:** ',
                 reason: 'New assignment created by: ' + message.author.username
             });
 
@@ -22,7 +22,7 @@ module.exports = (message, args) => {
 
         case 'handler': 
             // Declare some variables
-            var replytext = 'I am making you the maintainer of: ';
+            var replytext = 'I am making you the handler of: ';
             var channelsToModify = [];
 
             // Check if the message mentions any assignment channels to be modified. If not, assume the channel message is from to be modified.
@@ -47,9 +47,7 @@ module.exports = (message, args) => {
             message.channel.send(replytext);
 
             // Modify the channel(s)
-            channelsToModify.forEach(channel => {
-                channel.setTopic(channel.topic.replace(/\*\*maintainer:\*\*.*/mi, `**Maintainer:** ${message.author.tag}`));
-            });
+            channelsToModify.forEach(channel => channel.setTopic(channel.topic.replace(/\*\*handler:\*\*.*/mi, `**Handler:** ${message.author.tag}`)));
             break;
 
         default: 
