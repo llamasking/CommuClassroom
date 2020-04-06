@@ -92,7 +92,7 @@ module.exports = (message, args) => {
         }
 
         default: {
-            message.channel.send('Command unrecognized or not given. Please use !!assignment help or just ping me and mention help.');
+            message.channel.send('Command unrecognized or not given. Please use !!help or just ping me and mention help.');
         }
     }
 };
