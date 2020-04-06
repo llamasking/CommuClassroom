@@ -37,9 +37,10 @@ client.on('ready', () => {
   client.user.setActivity(config.activity.name, { url: config.activity.url, type: config.activity.type });
   client.user.setStatus(config.status);
 });
-
 client.on('guildCreate', (guild) => {
   log(`Joined new server: ${guild.name} with ${guild.memberCount} members.`);
+
+  fs.mkdirSync('./data/', { recursive: true });
 
   guild.channels.create('Current Assignments', {
     type: 'category',

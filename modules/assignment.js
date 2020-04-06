@@ -51,7 +51,7 @@ module.exports = (message, args) => {
             }
 
             // Tell user the work will be done.
-            message.channel.send(replytext);
+            message.channel.send(replytext + '. Please go through and update the channel topic(s) to include due dates, details on the assignment, etc.');
 
             // If the message author has a nickname, put their real username in parentheses. Otherwise, just use their tag.
             var messageAuthor = message.author.tag;
@@ -68,9 +68,6 @@ module.exports = (message, args) => {
 
             // Thumbs up!
             message.react('👍');
-
-            // Tell handler to update the fucking channel topics.
-            message.reply('You are now the handler. Please go through and update the channel topic(s) to include due dates, details on the assignment, etc.');
             break;
         }
 
