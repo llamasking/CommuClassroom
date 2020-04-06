@@ -1,7 +1,7 @@
 /*
-// Command: Assignment
-// Description: Assignment handler. I'll probably put most or all assignment data in this command.
-*/
+ * Command: Assignment
+ * Description: Assignment handler. I'll probably put most or all assignment data in this command.
+ */
 
 module.exports = (message, args) => {
     var guildInfo = require(`../data/${message.guild.id}.json`);
@@ -11,7 +11,7 @@ module.exports = (message, args) => {
             // Create new channel for assignment
             message.guild.channels.create(args[1], {
                 parent: guildInfo.activeCategory,
-                topic: '**Handler:** Please use "!!assignment handler" to you the handler. \n\n**Details:** ',
+                topic: '**Handler:** Please use "!!assignment handler" to make yourself the handler. \n**Due Date:** \n**Details:**',
                 reason: 'New assignment created by: ' + message.author.username
             });
 
@@ -53,17 +53,43 @@ module.exports = (message, args) => {
             // Tell user the work will be done.
             message.channel.send(replytext);
 
-            // Modify the channel(s)
-            channelsToModify.forEach(channel => channel.setTopic(channel.topic.replace(/\*\*handler:\*\*.*/mi, `**Handler:** ${message.author.tag}`)));
+            // If the message author has a nickname, put their real username in parentheses. Otherwise, just use their tag.
+            var messageAuthor = message.author.tag;
+            if (message.member.nickname) messageAuthor = `${message.member.nickname} (${message.author.tag})`;
+
+            // Modify the channel(s) to have updated topics and permissions
+            channelsToModify.forEach(channel => channel.setTopic(channel.topic.replace(/(?<=\*\*Handler:\*\* ).*/mi, messageAuthor)));
+            channelsToModify.forEach(channel => channel.overwritePermissions([
+                {
+                    id: message.author.id,
+                    allow: ['MANAGE_CHANNELS', 'MANAGE_MESSAGES']
+                }
+            ], 'Allow the assignment handler to complete the channel\'s topic.'));
+
+            // Thumbs up!
+            message.react('👍');
             break;
         }
 
         case 'turnedin': {
-            var handler = 
+            // If the message author has a nickname, put their real username in parentheses. Otherwise, just use their tag.
+            var messageAuthor = message.author.tag;
+            if (message.member.nickname) messageAuthor = `${message.member.nickname} (${message.author.tag})`;
+
+            // Simply modify channel topic to say that the assignment was turned in by X at Y time.
+            message.channel.setTopic(`**TURNED IN BY: ${messageAuthor}** on ${new Date().toUTCString()}. \n` + message.channel.topic);
+
+            // And move the channel to the archive. 
+            message.channel.setParent(guildInfo.archiveCategory, {reason: 'Assignment is turned in and as such is no longer "Current" or "Active."'});
+
+            // Thumbs up!
+            message.react('👍');
+
+            break;
         }
 
         default: {
-            message.channel.send('Command unrecognized or not given. Please use !!assignment help or just mention me and mention help.');
+            message.channel.send('Command unrecognized or not given. Please use !!assignment help or just ping me and mention help.');
         }
     }
 };
