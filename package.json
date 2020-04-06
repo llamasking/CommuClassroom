@@ -1,7 +1,6 @@
 {
     "name": "commu-classroom",
     "description": "A Discord bot designed to help suidents with \"peer assisted learning.\"",
-    "version": "0.1",
     "author": {
         "name": "llamasking",
         "url": "https://github.com/llamasking"

@@ -1,32 +1,26 @@
-# BadBot Framework
+# CommuClass Bot
 
-A simple, bare framework for Discord bots which is used in all my bots. It's designed to be modular and relatively easy to develop for. 
+An overly complicated way of ~~cheating on homework~~ -- I mean sharing knowledge with other students.
 
-## Build A Bot
+## Invite
+This bot is not up to my standards just yet, so for now there is no publicinvite link. However, the code is perfectly functional, so you're more than welcome to download it and host your own bot.
 
-### Introduction
-There should be no need to modify the bot's framework for most commands. Generally, you should be able to maintain the bot without ever once making a change to the framework itself.
+## Commands
+The bot can be activated in two ways:
+1. Starting a message with `!!assignment`.
+	* I will be adding some shortcuts like `!!ass` in the future.
+2. Pinging the bot followed by a command.
+	* Pinging the bot is like starting a message with `!!assignment`.
 
-### Module Setup
-Before we can even get to screwing with the config settings, you need to setup your npm modules. Please refer to the [discord.js docs](https://discord.js.org/#/docs/main/stable/general/welcome). You absolutely need to install `discord.js`, though I personally also installed `erlpack` and `uws`. If you intend to use voice, you must install either `node-opus` or `opusscript`. 
+The bot, at the time of writing has 3 commands.
+1. **New**: Creates a new text channel for an assignment, under the "Active Assignments" category created when the bot is added to a server.
+	* Channels are created with the preset topic of:
+>**Handler:** Please use "!!assignment handler" to make yourself the handler.
+**Due Date:**
+**Details:**
 
-Note: I have not tested voice in any way, shape, or form whatsoever. It may not work at all. I can not point in either way.
+2. **Handler**: Makes the person who sent the message the assignment's "handler"
+	* Changes the topic (above) to say the message author's name after handler.
+	* Gives the author the permision to edit the channel and fill out the details and due date.
 
-### Configuration
-Before starting the bot, you must copy or rename the `config.example.json` to `config.json`. Then, you simply fill it out.
-
-    * Activity: 
-      * Name: What the bot is playing, streaming, watching, or listening to. 
-      * URL: The twitch.tv stream url. Remove this line if not used.
-      * Type: The activity type. Rather self-explanatory.
-
-    * OwnerID must be an integer (not be in quotes).
-    
-### Write a module
-A module is called by typing <Prefix><Module>. For instance, `!!help` will run the `help.js` module. You can not have `!!helpme` run the `help.js` module unless you link `helpme.js` to `help.js` or copy it. 
-
-I highly recommend making a copy of `example.js` when beginning to write a module. You should probably fill out the comments up top to make sure anyone else reading your code knows exactly what everything does. When a module is called, the module is fed the message class and the `args` variable. 
-
-The message class contains all data on the message, such as the message's contents, author, time, etc. You can see everything on the [discord.js docs](https://discord.js.org/#/docs/main/stable/class/Message).
-
-The args variable is simply an array containing all the command arguments. Commands follow the format of `<Prefix><Command <Arguments>`. For instance, the command `!!testing arguments in a command` will return with `args[0]` being `"arguments"`, `args[1]` being `"in"`, `args[2]` being `"a"`, and so on. 
+3. **TurnedIn**: Edits the topic to say "**TURNED IN BY: MessageAuthor** on Date" (date's in UTC) before all other lines in the topic and moves the channel to the "Archived Assignments" category.
