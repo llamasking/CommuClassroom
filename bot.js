@@ -69,14 +69,14 @@ client.on('message', async (message) => {
   if (message.guild === null) return;
 
   // @Bot *help* and @Bot *commands*
-  if (message.mentions.users.has(client.user.id) && message.content.includes('help' || 'commands')) {
-    require('./modules/help.js')(message, args);
+  if (message.mentions.users.has(client.user.id) && message.content.toLowerCase().includes('help' || 'commands')) {
+    require('./modules/help.js')(message);
     return;
   }
 
   // Bot can be requested by just mentioning it since it only has one core command.
   if (message.mentions.users.has(client.user.id)) {
-    const args = message.content.trim().split(/ +/g).slice(1);
+    const args = message.content.toLowerCase().trim().split(/ +/g).slice(1);
     require('./modules/assignment.js')(message, args);
     return;
   }
@@ -117,7 +117,7 @@ client.on('message', async (message) => {
   }
 
   // Logging <READ THE TERMS ON THE GITHUB REPO FOR MORE INFO>
-  log(`Command: ${cmd} -- Arguments: ${args}`);
+  //log(`Command: ${cmd} -- Arguments: ${args}`);
 });
 
 client.login(config.token);

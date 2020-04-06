@@ -28,7 +28,7 @@ module.exports = (message, args) => {
             // Check if the message mentions any assignment channels to be modified. If not, assume the channel message is from to be modified.
             if (message.mentions.channels.size > 0) {
                 // Check that all channels mentioned are current assignments.
-                message.mentions.channels.each(channel => {
+                message.mentions.channels.forEach(channel => {
                     if (channel.parent.id !== guildInfo.activeCategory) {
                         channel.send(`${channel} is not under the 'Current Assignments' category so I will not modify it.`);
                     } else {
@@ -68,6 +68,9 @@ module.exports = (message, args) => {
 
             // Thumbs up!
             message.react('👍');
+
+            // Tell handler to update the fucking channel topics.
+            message.reply('You are now the handler. Please go through and update the channel topic(s) to include due dates, details on the assignment, etc.');
             break;
         }
 

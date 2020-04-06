@@ -3,5 +3,9 @@
     "credits": true,
     "hash": true,
 
-    "assignment": true
+    "assignment": true,
+    "ass": true,
+
+    "help": true,
+    "commands": true
 }
