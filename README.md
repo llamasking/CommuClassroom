@@ -9,9 +9,11 @@ This bot is not up to my standards just yet, so for now there is no publicinvite
 At the time of writing, the bot has 3 assignment commands.
 1. **New**: Creates a new text channel for an assignment, under the "Active Assignments" category created when the bot is added to a server.
 	* Channels are created with the preset topic of:
->**Handler:** Please use "!!assignment handler" to make yourself the handler.
+```
+**Handler:** Please use "!!assignment handler" to make yourself the handler.
 **Due Date:**
 **Details:**
+```
 
 2. **Handler**: Makes the person who sent the message the assignment's "handler"
 	* Changes the topic (above) to say the message author's name after handler.
