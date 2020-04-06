@@ -1,1 +1,1 @@
-./help.js
+help.js
