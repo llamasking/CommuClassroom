@@ -7,6 +7,7 @@ module.exports = (message, args) => {
     var guildInfo = require(`../data/${message.guild.id}.json`);
 
     switch(args[0]) {
+        case 'create':
         case 'new': {
             // Create new channel for assignment
             message.guild.channels.create(args[1], {
@@ -71,6 +72,9 @@ module.exports = (message, args) => {
             break;
         }
 
+        case 'done':
+        case 'complete':
+        case 'completed':
         case 'turnedin': {
             // If the message author has a nickname, put their real username in parentheses. Otherwise, just use their tag.
             var messageAuthor = message.author.tag;
@@ -79,8 +83,9 @@ module.exports = (message, args) => {
             // Simply modify channel topic to say that the assignment was turned in by X at Y time.
             message.channel.setTopic(`**TURNED IN BY: ${messageAuthor}** on ${new Date().toUTCString()}. \n` + message.channel.topic);
 
-            // And move the channel to the archive. 
-            message.channel.setParent(guildInfo.archiveCategory, {reason: 'Assignment is turned in and as such is no longer "Current" or "Active."'});
+            // And move the channel to the archive then use the archived permissions.
+            message.channel.setParent(guildInfo.archiveCategory, { reason: 'Assignment is completed or turned in.' })
+                .then(channel => channel.lockPermissions());
 
             // Thumbs up!
             message.react('👍');

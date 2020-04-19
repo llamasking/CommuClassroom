@@ -1,6 +1,6 @@
 /*
 // Framework: Logging
-// Description: Logs given data with 'console.log', attaching the timestamp. 
+// Description: Logs given data with 'console.log', attaching the timestamp.
 */
 
 module.exports = (data) => {

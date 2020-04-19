@@ -1,6 +1,6 @@
 /*
 // Command: Exec
-// Description: Executes a command in shell. 
+// Description: Executes a command in shell.
 */
 
 module.exports = (message) => {

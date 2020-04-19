@@ -12,7 +12,7 @@ module.exports = (message) => {
 
         .addField('!!assignment New', 'Creates a new assignment text channel under the "Active Assignments" category.')
         .addField('!!assignment Handler [#assignment1, #assignment2, ...]', 'Makes the person who sent the message the assignment "handler" (if assignment channels are mentioned, become maintainer of those).')
-        .addField('!!assignment TurnedIn', 'Marks assignment as "turned in" in the topic and moves the text channel to the "Archived Assignments" category.')
+        .addField('!!assignment Done', 'Marks assignment as "turned in" in the topic and moves the text channel to the "Archived Assignments" category.')
 
         // Yes, I'm pulling the rainbow.gif from Twitblend because I'm too lazy to copy it over, lmao.
         .setImage('https://raw.githubusercontent.com/llamasking/TwitblendBot-Discord/master/rainbow.gif')
