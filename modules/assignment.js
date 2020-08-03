@@ -8,7 +8,7 @@ module.exports = (message, args) => {
 
     switch(args[0]) {
         case 'create':
-        case 'new': {
+        case 'new':
             // Create new channel for assignment
             message.guild.channels.create(args[1], {
                 parent: guildInfo.activeCategory,
@@ -19,9 +19,8 @@ module.exports = (message, args) => {
             // Thumbs up!
             message.react('👍');
             break;
-        }
 
-        case 'handler': {
+        case 'handler':
             // Declare some variables
             var replytext = 'I am making you the handler of: ';
             var channelsToModify = [];
@@ -70,12 +69,11 @@ module.exports = (message, args) => {
             // Thumbs up!
             message.react('👍');
             break;
-        }
 
         case 'done':
         case 'complete':
         case 'completed':
-        case 'turnedin': {
+        case 'turnedin':
             // If the message author has a nickname, put their real username in parentheses. Otherwise, just use their tag.
             var messageAuthor = message.author.tag;
             if (message.member.nickname) messageAuthor = `${message.member.nickname} (${message.author.tag})`;
@@ -89,12 +87,10 @@ module.exports = (message, args) => {
 
             // Thumbs up!
             message.react('👍');
-
             break;
-        }
 
-        default: {
+        default:
             message.channel.send('Command unrecognized or not given. Please use !!help or just ping me and mention help.');
-        }
+
     }
 };
