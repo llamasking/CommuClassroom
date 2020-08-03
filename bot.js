@@ -92,29 +92,25 @@ client.on('message', async (message) => {
   switch (cmd) {
     // ONLY FOR USE WITH COMMANDS THAT DO NOT PLAY WELL AS A MODULE
 
-    case 'exec': {
+    case 'exec':
       // Checks if the message author is the owner.
       // If not, ignore it.
       if (message.author.id === config.ownerID) execcmd(message);
       break;
-    }
 
-
-    case 'ping': {
+    case 'ping':
       // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
       // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
       // eslint-disable-next-line no-case-declarations
       const m = await message.channel.send('Testing ping!');
       m.edit(`Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
       break;
-    }
 
     // Load from module if command plays well in a module
-    default: {
+    default:
       // Ignore disabled modules
       if (!activated[cmd]) return;
       require(`./modules/${cmd}.js`)(message, args);
-    }
   }
 
   // Logging <READ THE TERMS ON THE GITHUB REPO FOR MORE INFO>
